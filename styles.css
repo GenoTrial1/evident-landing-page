@@ -694,6 +694,12 @@ main {
 }
 
 @media (max-width: 640px) {
+  .orb-one,
+  .orb-four,
+  .orb-lines {
+    display: none;
+  }
+
   .nav {
     flex-direction: row;
     align-items: center;
@@ -721,6 +727,13 @@ main {
     z-index: 6;
     transform: translateX(100%);
     transition: transform 0.3s ease;
+  }
+
+  .nav-links .nav-close {
+    position: absolute;
+    top: 24px;
+    right: 20px;
+    color: var(--text);
   }
 
   .nav-links.is-open {

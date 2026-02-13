@@ -273,11 +273,21 @@ const wireMobileNav = () => {
     return;
   }
 
+  const closeButton = navLinks.querySelector('.nav-close');
+
   toggle.addEventListener('click', () => {
     const isOpen = navLinks.classList.toggle('is-open');
     document.body.classList.toggle('nav-open', isOpen);
     toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
+
+  if (closeButton) {
+    closeButton.addEventListener('click', () => {
+      navLinks.classList.remove('is-open');
+      document.body.classList.remove('nav-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  }
 
   navLinks.addEventListener('click', (event) => {
     if (event.target.closest('a')) {
