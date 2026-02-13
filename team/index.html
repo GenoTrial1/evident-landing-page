@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Evident | Team</title>
+    <meta
+      name="description"
+      content="Meet the Evident team building veterinary data intelligence."
+    />
+    <link rel="icon" href="/static/favicon.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Source+Sans+3:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="bg">
+      <div class="orb orb-one" aria-hidden="true"></div>
+      <div class="orb orb-two" aria-hidden="true"></div>
+      <div class="orb orb-three" aria-hidden="true"></div>
+      <div class="orb orb-four" aria-hidden="true"></div>
+      <div class="orb orb-one orb-flat" aria-hidden="true"></div>
+      <div class="orb orb-two orb-flat" aria-hidden="true"></div>
+      <div class="orb orb-three orb-flat" aria-hidden="true"></div>
+      <div class="orb orb-four orb-flat" aria-hidden="true"></div>
+      <canvas class="orb-lines" aria-hidden="true"></canvas>
+      <div class="grid" aria-hidden="true"></div>
+    </div>
+
+    <header class="nav">
+      <a class="logo" href="/" aria-label="Evident home">
+        <img src="/static/logo.png" alt="Evident logo" />
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <nav class="nav-links">
+        <button class="nav-toggle nav-close" type="button" aria-label="Close menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+        <a href="/">Home</a>
+        <a href="/pharma/">Use Cases</a>
+        <a href="/vets/">For Vets</a>
+        <a href="/team/" class="active">Team</a>
+        <a href="/contact/" class="button small">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <p class="eyebrow">Team</p>
+        <h1>Meet the team behind Evident.</h1>
+        <p class="lede">
+          We combine medical domain knowledge with AI and data engineering to
+          unlock real-world evidence from clinical records.
+        </p>
+      </section>
+
+      <section class="content">
+        <div class="team-grid">
+          <div class="team-card">
+            <img class="team-photo" src="/static/Kevin.jpeg" alt="Kevin Barrett" />
+            <h3>Kevin Barrett</h3>
+            <p class="team-role">Co-Founder &amp; CEO</p>
+          </div>
+          <div class="team-card">
+            <img class="team-photo" src="/static/robSquare.png" alt="Rob Brown" />
+            <h3>Rob Brown</h3>
+            <p class="team-role">Co-Founder &amp; CTO</p>
+          </div>
+          <div class="team-card">
+            <img class="team-photo" src="/static/karlSquare.png" alt="Karl Bracken" />
+            <h3>Karl Bracken</h3>
+            <p class="team-role">Machine Learning Engineer</p>
+          </div>
+          <div class="team-card">
+            <img class="team-photo" src="/static/oliverSquare.png" alt="Oliver Nagy" />
+            <h3>Oliver Nagy</h3>
+            <p class="team-role">Full Stack Engineer</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section cta">
+        <div class="cta-content">
+          <h2>Want to work with us?</h2>
+          <p>Tell us about your goals and we will be in touch.</p>
+        </div>
+        <div class="cta-actions">
+          <a class="button" href="/contact/">Contact the team</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>
+        <div class="logo">Evident</div>
+        <p>Veterinary data intelligence platform.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/pharma/">Use Cases</a>
+        <a href="/vets/">For Vets</a>
+        <a href="/team/">Team</a>
+        <a href="/contact/">Contact</a>
+      </div>
+    </footer>
+    <script src="/scripts.js"></script>
+  </body>
+</html>
