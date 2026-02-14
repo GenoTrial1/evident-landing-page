@@ -97,9 +97,9 @@ const updateOrbLines = () => {
   ctx.clearRect(0, 0, width, height);
 
   const lines = [
-    { a: orbs[0], b: orbs[1] },
-    { a: orbs[1], b: orbs[2] },
-    { a: orbs[0], b: orbs[2] },
+    { a: orbs[0], b: orbs[1], minWidth: 6, maxWidth: 10 },  // purple-blue (base)
+    { a: orbs[1], b: orbs[2], minWidth: 10, maxWidth: 50 }, // blue-white (thickest)
+    { a: orbs[0], b: orbs[2], minWidth: 8, maxWidth: 14 },  // purple-white (thicker)
   ];
 
   const docHeight = document.documentElement.scrollHeight;
@@ -127,6 +127,8 @@ const updateOrbLines = () => {
         alpha: 1,
         progress: orbFourLineProgress,
         minVisible: 0,
+        minWidth: 9,
+        maxWidth: 16,
       });
     } else {
       lines.push({
@@ -136,6 +138,8 @@ const updateOrbLines = () => {
         alpha: 1,
         progress: orbFourLineProgress,
         minVisible: 0,
+        minWidth: 9,
+        maxWidth: 16,
       });
     }
   }
@@ -148,6 +152,8 @@ const updateOrbLines = () => {
       alpha: overrideAlpha,
       progress: overrideProgress,
       minVisible: overrideMinVisible,
+      minWidth: overrideMinWidth,
+      maxWidth: overrideMaxWidth,
     }) => {
     const length = Math.hypot(b.x - a.x, b.y - a.y);
     if (length === 0) {
@@ -160,8 +166,8 @@ const updateOrbLines = () => {
         : overrideMinVisible;
     const lineProgress = overrideProgress ?? progress;
     const visible = minVisible + (length - minVisible) * lineProgress;
-    const maxWidth = 10;
-    const minWidth = 6;
+    const maxWidth = overrideMaxWidth ?? 10;
+    const minWidth = overrideMinWidth ?? 6;
     const steps = 72;
     const tEnd = clamp(visible / length, 0, 1);
     const resolvedColor = parseRgb(overrideColor || a.color) || {
