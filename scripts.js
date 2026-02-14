@@ -257,7 +257,7 @@ const wireWeb3Forms = () => {
         throw new Error('Form submission failed.');
       }
 
-      window.location.href = 'success.html';
+      window.location.href = '/success/';
     } catch (error) {
       if (status) {
         status.textContent = 'Something went wrong. Please try again.';
