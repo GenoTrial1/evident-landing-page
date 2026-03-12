@@ -215,6 +215,7 @@ const wireVimeoPlaybackOnView = () => {
   const volumeInput = document.querySelector('[data-video-volume]');
   const progressInput = document.querySelector('[data-video-progress]');
   const timeReadout = document.querySelector('[data-video-time]');
+  const fullscreenButton = document.querySelector('[data-video-fullscreen]');
   if (!iframe) {
     return;
   }
@@ -459,6 +460,21 @@ const wireVimeoPlaybackOnView = () => {
 
   if (progressInput) {
     progressInput.value = '0';
+  }
+
+  if (fullscreenButton) {
+    fullscreenButton.addEventListener('click', async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      try {
+        await player.requestFullscreen();
+      } catch (error) {
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen().catch(() => {});
+        }
+      }
+    });
   }
 };
 
