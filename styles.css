@@ -1088,11 +1088,34 @@ main {
   }
 
   .video-bottom-bar {
-    display: none;
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    left: auto;
+    display: grid;
+    grid-template-columns: auto;
+    gap: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    backdrop-filter: none;
+    opacity: 1;
+    transform: none;
   }
 
   .video-fullscreen-btn {
     display: inline-flex;
+    right: 64px;
+    bottom: 14px;
+  }
+
+  .video-progress-wrap,
+  .video-time {
+    display: none;
+  }
+
+  .video-overlay {
+    grid-template-rows: 1fr;
   }
 
   .section.dark,
