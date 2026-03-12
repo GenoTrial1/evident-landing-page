@@ -206,6 +206,262 @@ const updateOrbLines = () => {
   });
 };
 
+const wireVimeoPlaybackOnView = () => {
+  const iframe = document.querySelector('.video-frame iframe');
+  const frame = document.querySelector('.video-frame');
+  const overlay = document.querySelector('[data-video-overlay]');
+  const volumeToggle = document.querySelector('[data-video-volume-toggle]');
+  const volumePanel = document.querySelector('[data-video-volume-panel]');
+  const volumeInput = document.querySelector('[data-video-volume]');
+  const progressInput = document.querySelector('[data-video-progress]');
+  const timeReadout = document.querySelector('[data-video-time]');
+  if (!iframe) {
+    return;
+  }
+
+  if (!window.Vimeo || !window.Vimeo.Player) {
+    return;
+  }
+
+  const player = new window.Vimeo.Player(iframe);
+  let duration = 0;
+  let isScrubbing = false;
+  const defaultVolume = 0.3;
+  let activeVolume = defaultVolume;
+
+  const formatTime = (seconds) => {
+    if (!Number.isFinite(seconds) || seconds < 0) {
+      return '0:00';
+    }
+    const total = Math.floor(seconds);
+    const minutes = Math.floor(total / 60);
+    const secs = String(total % 60).padStart(2, '0');
+    return `${minutes}:${secs}`;
+  };
+
+  const updateTimeReadout = (current) => {
+    if (!timeReadout) {
+      return;
+    }
+    timeReadout.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
+  };
+
+  const setPauseUi = (isPaused) => {
+    if (frame) {
+      frame.classList.toggle('is-paused', isPaused);
+    }
+  };
+
+  const setVolumeUi = (volume, isMuted) => {
+    if (!volumeToggle || !volumeInput) {
+      return;
+    }
+    volumeInput.value = String(Math.max(0, Math.min(1, volume)));
+    const mutedState = isMuted || volume === 0;
+    volumeToggle.classList.toggle('is-muted', mutedState);
+    volumeToggle.setAttribute('aria-label', mutedState ? 'Unmute and open volume slider' : 'Open volume slider');
+  };
+
+  const setVolumePanel = (isOpen) => {
+    if (!volumePanel) {
+      return;
+    }
+    volumePanel.classList.toggle('is-open', isOpen);
+  };
+
+  const togglePlayback = () => {
+    player.getPaused().then((isPaused) => {
+      if (isPaused) {
+        player.play().then(() => {
+          if (frame) {
+            frame.classList.add('is-playing');
+          }
+          setPauseUi(false);
+        }).catch(() => {});
+      } else {
+        player.pause().then(() => {
+          setPauseUi(true);
+        }).catch(() => {});
+      }
+    }).catch(() => {});
+  };
+
+  player.ready().then(() => {
+    player.setMuted(true).catch(() => {});
+    player.setVolume(0).catch(() => {});
+    player.setLoop(true).catch(() => {});
+    setVolumeUi(0, true);
+    setPauseUi(true);
+    player.getDuration().then((value) => {
+      duration = value || 0;
+      updateTimeReadout(0);
+    }).catch(() => {});
+    player.play().then(() => {
+      if (frame) {
+        frame.classList.add('is-playing');
+      }
+      setPauseUi(false);
+    }).catch(() => {});
+  }).catch(() => {});
+
+  player.on('durationchange', (event) => {
+    duration = event.duration || 0;
+    updateTimeReadout(event.seconds || 0);
+  });
+
+  player.on('timeupdate', (event) => {
+    if (progressInput && !isScrubbing && duration > 0) {
+      progressInput.value = String((event.seconds / duration) * 100);
+    }
+    updateTimeReadout(event.seconds || 0);
+  });
+
+  player.on('play', () => {
+    setPauseUi(false);
+  });
+
+  player.on('pause', () => {
+    setPauseUi(true);
+  });
+
+  player.on('volumechange', (event) => {
+    const isMuted = event.volume === 0 || event.muted === true;
+    setVolumeUi(event.volume, isMuted);
+    if (!isMuted && event.volume > 0) {
+      activeVolume = event.volume;
+    }
+  });
+
+  if (overlay) {
+    overlay.addEventListener('click', (event) => {
+      if (
+        event.target instanceof HTMLElement &&
+        event.target.closest('input[type="range"], [data-video-volume-toggle]')
+      ) {
+        return;
+      }
+      if (volumePanel && volumePanel.classList.contains('is-open')) {
+        setVolumePanel(false);
+        return;
+      }
+      setVolumePanel(false);
+      togglePlayback();
+    });
+  }
+
+  if (volumeToggle) {
+    volumeToggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      player.getVolume().then((currentVolume) => {
+        player.getMuted().then((isMuted) => {
+          if (isMuted || currentVolume === 0) {
+            player.setMuted(false).catch(() => {});
+            player.setVolume(defaultVolume).catch(() => {});
+            activeVolume = defaultVolume;
+          }
+          if (volumePanel) {
+            setVolumePanel(!volumePanel.classList.contains('is-open'));
+          }
+        }).catch(() => {});
+      }).catch(() => {});
+    });
+  }
+
+  if (volumeInput) {
+    volumeInput.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+    volumeInput.addEventListener('input', () => {
+      const nextVolume = Number(volumeInput.value);
+      if (!Number.isFinite(nextVolume)) {
+        return;
+      }
+      player.setVolume(nextVolume).catch(() => {});
+      player.setMuted(nextVolume === 0).catch(() => {});
+      if (nextVolume > 0) {
+        activeVolume = nextVolume;
+      }
+      setVolumePanel(true);
+    });
+  }
+
+  if (progressInput) {
+    progressInput.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+    progressInput.addEventListener('pointerdown', () => {
+      isScrubbing = true;
+    });
+    progressInput.addEventListener('pointerup', () => {
+      isScrubbing = false;
+    });
+    progressInput.addEventListener('input', () => {
+      if (duration <= 0) {
+        return;
+      }
+      const target = (Number(progressInput.value) / 100) * duration;
+      if (Number.isFinite(target)) {
+        player.setCurrentTime(target).catch(() => {});
+      }
+    });
+  }
+
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof HTMLElement)) {
+      return;
+    }
+    if (event.target.closest('.video-volume-wrap')) {
+      return;
+    }
+    setVolumePanel(false);
+  });
+
+  if (volumeToggle) {
+    volumeToggle.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        setVolumePanel(false);
+      }
+    });
+  }
+
+  if (volumeInput) {
+    volumeInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        setVolumePanel(false);
+      }
+    });
+  }
+
+  if (frame) {
+    frame.addEventListener('keydown', (event) => {
+      if (event.key === ' ') {
+        event.preventDefault();
+        togglePlayback();
+      }
+    });
+  }
+
+  if (frame) {
+    frame.setAttribute('tabindex', '0');
+  }
+
+  if (activeVolume > 0) {
+    player.getMuted().then((isMuted) => {
+      if (!isMuted) {
+        player.setVolume(activeVolume).catch(() => {});
+      }
+    }).catch(() => {});
+  }
+
+  if (volumeInput) {
+    volumeInput.value = String(defaultVolume);
+  }
+
+  if (progressInput) {
+    progressInput.value = '0';
+  }
+};
+
 let rafId = null;
 
 const startOrbLineLoop = () => {
@@ -271,6 +527,7 @@ const wireWeb3Forms = () => {
 };
 
 window.addEventListener('load', wireWeb3Forms);
+window.addEventListener('load', wireVimeoPlaybackOnView);
 
 const wireMobileNav = () => {
   const toggle = document.querySelector('.nav-toggle');

@@ -3,12 +3,24 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="origin-when-cross-origin" />
     <title>Evident | Veterinary Data Intelligence</title>
     <meta
       name="description"
       content="Evident transforms unstructured veterinary records into real-world intelligence for pharma, CROs, nutrition brands, and veterinary practice groups."
     />
     <link rel="icon" href="static/favicon.png" type="image/png" />
+    <link rel="preconnect" href="https://player.vimeo.com" />
+    <link rel="preconnect" href="https://i.vimeocdn.com" />
+    <link rel="preconnect" href="https://f.vimeocdn.com" />
+    <link rel="dns-prefetch" href="//player.vimeo.com" />
+    <link rel="dns-prefetch" href="//i.vimeocdn.com" />
+    <link rel="dns-prefetch" href="//f.vimeocdn.com" />
+    <link
+      rel="preload"
+      href="https://player.vimeo.com/api/player.js"
+      as="script"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -88,6 +100,100 @@
             <div class="metric">
               <p class="metric-label">Ingestion formats</p>
               <p class="metric-value">APIs, Custom Feeds, Bulk PDF</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section video-section" id="overview-video">
+        <div class="video-shell">
+          <div class="video-frame">
+            <img
+              class="video-poster"
+              src="https://vumbnail.com/1172864455.jpg"
+              alt=""
+              aria-hidden="true"
+              loading="eager"
+              decoding="async"
+            />
+            <iframe
+              src="https://player.vimeo.com/video/1172864455?title=0&byline=0&portrait=0&badge=0&controls=0&muted=1&autopause=0"
+              title="Evident overview video"
+              loading="eager"
+              fetchpriority="high"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+              referrerpolicy="origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+            <div class="video-overlay" data-video-overlay>
+              <div class="video-center-indicator" aria-hidden="true">
+                <span></span>
+                <span></span>
+              </div>
+              <div class="video-bottom-bar">
+                <label class="video-progress-wrap">
+                  <input
+                    class="video-range"
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value="0"
+                    data-video-progress
+                  />
+                </label>
+                <p class="video-time" data-video-time>0:00 / 0:00</p>
+                <div class="video-volume-wrap">
+                  <button class="video-volume-btn" type="button" data-video-volume-toggle aria-label="Volume">
+                    <svg
+                      class="icon-volume"
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path
+                        d="M3 10h4l5-4v12l-5-4H3zM16 8a5 5 0 0 1 0 8M18.5 5.5a8.5 8.5 0 0 1 0 13"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <svg
+                      class="icon-muted"
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path
+                        d="M3 10h4l5-4v12l-5-4H3M16 8l5 8M21 8l-5 8"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  <div class="video-volume-panel" data-video-volume-panel>
+                    <input
+                      class="video-range"
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value="0.3"
+                      data-video-volume
+                      aria-label="Volume"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -217,6 +323,7 @@
         <a href="/contact/">Contact</a>
       </div>
     </footer>
+    <script src="https://player.vimeo.com/api/player.js"></script>
     <script src="scripts.js"></script>
   </body>
 </html>
